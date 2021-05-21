@@ -144,6 +144,47 @@ export default function styleConstructor(theme = {}) {
       marginLeft: appStyle.todayButtonPosition === 'right' ? 7 : undefined,
       marginRight: appStyle.todayButtonPosition === 'right' ? undefined : 7
     },
+    
+    addButtonContainer: {
+      alignItems: 'flex-end',
+      position: 'absolute', 
+      left: 20, 
+      right: 20, 
+      bottom : 0
+    },
+    addButton: {
+      height: commons.isTablet ? 40 : 28, 
+      paddingHorizontal: commons.isTablet ? 20 : 12,
+      borderRadius: commons.isTablet ? 20 : 14,
+      flexDirection: 'row-reverse',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'white',
+      ...Platform.select({
+        ios: {
+          shadowColor: '#79838A',
+          shadowOpacity: 0.3,
+          shadowRadius: 14,
+          shadowOffset: {height: 6, width: 0}
+        },
+        android: {
+          elevation: 6
+        }
+      })
+    },
+    addButtonText: {
+      color: appStyle.todayButtonTextColor,
+      fontSize: commons.isTablet ? appStyle.todayButtonFontSize + 2 : appStyle.todayButtonFontSize,
+      fontWeight: appStyle.todayButtonFontWeight,
+      fontFamily: appStyle.todayButtonFontFamily
+    },
+    addButtonImage: {
+      tintColor: appStyle.todayButtonTextColor,
+      marginLeft: 7,
+      marginRight: undefined
+    },
+    
+        
     ...(theme[STYLESHEET_ID] || {})
   });
 }

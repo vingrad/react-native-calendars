@@ -148,6 +148,15 @@ class CalendarProvider extends Component {
     this.setDate(today, UPDATE_SOURCES.TODAY_PRESS);
   }
 
+  //onAddButtonTapped(date) {
+  onAddButtonTapped = (date) => {
+    console.log('onAddButtonTapped: ' + date)
+
+    if(this.props.onAddButtonTapped) {
+      this.props.onAddButtonTapped(date);
+    }
+  }
+
   renderTodayButton() {
     const {disabled, opacity, buttonY, buttonIcon} = this.state;
     const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
@@ -163,6 +172,22 @@ class CalendarProvider extends Component {
     );
   }
 
+  renderAddButton() {
+    console.log(this.state);
+    const {date, disabled, opacity, buttonY, buttonIcon} = this.state;
+    const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
+    const today = todayString.charAt(0).toUpperCase() + todayString.slice(1);
+
+    return (
+      <Animated.View style={[this.style.addButtonContainer, {transform: [{translateY: buttonY}]}]}>
+        <TouchableOpacity style={[this.style.addButton, this.props.addButtonStyle]} onPress={() => this.onAddButtonTapped(date)}>
+          <Animated.Image style={[this.style.addButtonImage, {opacity}]} source={buttonIcon}/>
+          <Animated.Text allowFontScaling={false} style={[this.style.addButtonText, {opacity}]}>Hinzufügen</Animated.Text>
+        </TouchableOpacity>
+      </Animated.View>
+    );
+  }
+
   render() {
     return (
       <CalendarContext.Provider value={this.getProviderContextValue()}>
@@ -170,9 +195,14 @@ class CalendarProvider extends Component {
           {this.props.children}
         </View>
         {this.props.showTodayButton && this.renderTodayButton()}
+        {this.props.showAddButton && this.renderAddButton()}
       </CalendarContext.Provider>
     );
   }
+
+
+
+
 }
 
 export default CalendarProvider;
