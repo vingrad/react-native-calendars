@@ -17,6 +17,12 @@ const iconDown = require('../img/down.png');
 const iconUp = require('../img/up.png');
 const TOP_POSITION = 65;
 
+//import { Circle, Button, IconButton, Icon, AddIcon, Center, NativeBaseProvider } from "native-base"
+import { Circle, Button, IconButton, AddIcon, Center, NativeBaseProvider } from "native-base"
+import Icon from 'react-native-vector-icons/Ionicons';
+
+
+
 /**
  * @description: Calendar context provider component
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
@@ -151,12 +157,14 @@ class CalendarProvider extends Component {
     this.setDate(today, UPDATE_SOURCES.TODAY_PRESS);
   };
 
-  //onAddButtonTapped(date) {
   onAddButtonTapped = (date) => {
     console.log('onAddButtonTapped: ' + date)
 
-    if(this.props.onAddButtonTapped) {
-      this.props.onAddButtonTapped(date);
+    console.log('this.props.selectedActivity: ' + this.props.selectedActivity)
+    console.log('this.props.selectedActivityName: ' + this.props.selectedActivityName)
+
+    if (this.props.onAddButtonTapped) {
+      this.props.onAddButtonTapped(date, this.props.selectedActivity, this.props.selectedActivityName);
     }
   }
 
@@ -182,19 +190,41 @@ class CalendarProvider extends Component {
   }
 
   renderAddButton() {
+    console.log('.....................................................');
+    console.log('renderAddButton');
+    console.log('.....................................................');
     console.log(this.state);
+
     const {date, disabled, opacity, buttonY, buttonIcon} = this.state;
     const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
     const today = todayString.charAt(0).toUpperCase() + todayString.slice(1);
 
     return (
+        <Animated.View style={[this.style.addButtonContainer, {transform: [{translateY: buttonY}]}]}>
+              <Circle size={45} bg="primary.500">
+                <Icon name="add-outline" onPress={() => this.onAddButtonTapped(date)} color="white" size={35} />
+              </Circle>
+        </Animated.View>
+    )
+
+/*
+        <Animated.View style={[this.style.addButtonContainer, {transform: [{translateY: buttonY}]}]}>
+              <Circle size={45} bg="primary.500">
+                <Icon name="add-outline" onPress={() => this.onAddButtonTapped(date)} color="white" size={35} />
+              </Circle>
+        </Animated.View>
+*/
+
+    /*
+    return (
       <Animated.View style={[this.style.addButtonContainer, {transform: [{translateY: buttonY}]}]}>
         <TouchableOpacity style={[this.style.addButton, this.props.addButtonStyle]} onPress={() => this.onAddButtonTapped(date)}>
-          <Animated.Image style={[this.style.addButtonImage, {opacity}]} source={buttonIcon}/>
-          <Animated.Text allowFontScaling={false} style={[this.style.addButtonText, {opacity}]}>Hinzufügen</Animated.Text>
+          <Animated.Image style={[this.style.addButtonImage, {opacity}]} source='iconDown' />
+          <Animated.Text allowFontScaling={false} style={[this.style.addButtonText, {opacity}]}>Verfügbarkeit hinzufügen</Animated.Text>
         </TouchableOpacity>
       </Animated.View>
     );
+    */
   }
 
   render() {
